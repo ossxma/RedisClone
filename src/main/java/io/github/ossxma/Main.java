@@ -11,15 +11,20 @@ public class Main {
         ServerSocket socket = new ServerSocket(port);
 
         while (true) {
-            Socket client = socket.accept();
-            InputStream clientInputStream = client.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientInputStream));
-            PrintWriter writer = new PrintWriter(client.getOutputStream(), true);
+            try(Socket client = socket.accept()) {
+                InputStream clientInputStream = client.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(clientInputStream));
+                PrintWriter writer = new PrintWriter(client.getOutputStream(), true);
 
-            String line = null;
-            while ((line = reader.readLine()).length() > 0) {
-                System.out.println(line);
-                writer.println(line);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    if (line.length() == 0)
+                        continue;
+                    System.out.println(line);
+                    writer.println(line);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }
