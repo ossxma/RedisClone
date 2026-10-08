@@ -17,6 +17,7 @@ public class Main {
                 PrintWriter writer = new PrintWriter(client.getOutputStream(), true);
 
                 String line = null;
+//                "*1\r\n$4\r\nPING\r\n"
                 while ((line = reader.readLine()) != null) {
                     if (line.length() == 0)
                         continue;
